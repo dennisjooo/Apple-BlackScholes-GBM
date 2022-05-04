@@ -160,21 +160,21 @@ def payoff_profit(data, expected_price, kind, r, period, option_type):
     # Checking whether the option is a long option and setting the payoff and cost appropriately
     if str.lower(option_type) == 'long':
         data['payoff'] = data['payoff']
-        data['bs_price_fv'] = -data['bs_price'] * np.exp(r * period)
         data['last_price_fv'] = -data['last_price'] * np.exp(r * period)
+        data['bs_price_fv'] = -data['bs_price'] * np.exp(r * period)
 
     # Checking whether the option is a short option and setting the payoff and cost appropriately
     elif str.lower(option_type) == 'short':
         data['payoff'] = -data['payoff']
-        data['bs_price_fv'] = data['bs_price'] * np.exp(r * period)
         data['last_price_fv'] = data['last_price'] * np.exp(r * period)
+        data['bs_price_fv'] = data['bs_price'] * np.exp(r * period)
 
     # Dropping some redundant columns
     data.drop(['bs_price', 'last_price'], axis=1, inplace=True)
 
     # Calculating the profit using both the last trading price and the Black Scholes price
-    data['profit'] = data['payoff'] + data['last_price_fv']
     data['bs_profit'] = data['payoff'] + data['bs_price_fv']
+    data['profit'] = data['payoff'] + data['last_price_fv']
 
     # Returning the dataframe
     return data
